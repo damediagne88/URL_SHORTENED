@@ -27,14 +27,37 @@ if($url){
     
 }
 
-App\Url::create([
+function get_unique_short_url(){
+
+    $shortener = str_random(5);
+
+    if(App\Url::whereShortener($shortener)->count() > 0){
+
+        return get_unique_short_url();
+    }
+
+    return $shortener;
+}
+
+$row =App\Url::create([
 
     'url' => request('url'),
-    'shortener' =>'',
+    'shortener' => get_unique_short_url(),
 ]);
+
+if($row){
+
+    return view('result')->with('shortener', $row->shortener);
+}else{
+
+    return   redirect('/');
+
+}
 
 
 });
+
+
 
 Route::get('/{shortener}', function ($shortener) {
    
