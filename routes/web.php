@@ -24,7 +24,14 @@ $url = App\Url::where('url', request('url'))->first();
 if($url){
 
     return view('result')->with('shortener', $url->shortener);
+    
 }
+
+App\Url::create([
+
+    'url' => request('url'),
+    'shortener' =>'',
+]);
 
 
 });
@@ -36,12 +43,10 @@ Route::get('/{shortener}', function ($shortener) {
     if(! $url){
 
       return   redirect('/');
-
         
     }else{
 
         return redirect($url->url);
     }
 
-    
 });
