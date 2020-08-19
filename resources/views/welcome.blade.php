@@ -3,8 +3,6 @@
 
 @section('content')
 
-The best url shortener our there
-
 <form method="post" action="/">
 @csrf
 
