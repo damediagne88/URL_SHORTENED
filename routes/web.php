@@ -21,6 +21,7 @@ Route::post('/', function (Request $request) {
 
     Request()->validate([
         'url' =>['required','url'],
+       
     ]);
 
     //Vérifier que l'url passer en argument n'a pas été raccourcie et la retourner si tel est le cas 
