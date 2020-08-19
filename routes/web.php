@@ -13,61 +13,15 @@ use App\Url;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','UrlsController@create');
 
-Route::post('/', function (Request $request) {
-
-    Request()->validate([
-        'url' =>['required','url'],
-       
-    ]);
-
-    //Vérifier que l'url passer en argument n'a pas été raccourcie et la retourner si tel est le cas 
-
-$url = App\Url::where('url', request('url'))->first();
-
-if($url){
-
-    return view('result')->with('shortener', $url->shortener);
-    
-}
-
-
-$row = App\Url::create([
-
-    'url' => request('url'),
-    'shortener' =>Url::get_unique_short_url()
-]);
-
-if($row){
-
-    return view('result')->with('shortener', $row->shortener);
-}else{
-
-    return   redirect('/');
-
-}
-
-
-});
+Route::post('/','UrlsController@store');
+Route::get('//{shortener}','UrlsController@show');
 
 
 
 
 
-Route::get('/{shortener}', function ($shortener) {
-   
-    $url = App\Url::where('shortener',$shortener)->first();
 
-    if(! $url){
 
-      return   redirect('/');
-        
-    }else{
 
-        return redirect($url->url);
-    }
-
-});
