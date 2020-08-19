@@ -1,5 +1,7 @@
 <?php
 
+use App\Url;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/', function () {
+Route::post('/', function (Request $request) {
+
+    Request()->validate([
+        'url' =>['required','url'],
+    ]);
 
     //Vérifier que l'url passer en argument n'a pas été raccourcie et la retourner si tel est le cas 
 
@@ -27,22 +33,11 @@ if($url){
     
 }
 
-function get_unique_short_url(){
 
-    $shortener = str_random(5);
-
-    if(App\Url::whereShortener($shortener)->count() > 0){
-
-        return get_unique_short_url();
-    }
-
-    return $shortener;
-}
-
-$row =App\Url::create([
+$row = App\Url::create([
 
     'url' => request('url'),
-    'shortener' => get_unique_short_url(),
+    'shortener' =>Url::get_unique_short_url()
 ]);
 
 if($row){
@@ -56,6 +51,8 @@ if($row){
 
 
 });
+
+
 
 
 

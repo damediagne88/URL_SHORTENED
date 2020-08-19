@@ -12,13 +12,13 @@ class Url extends Model
         'url', 'shortener',
     ];
 
-    function get_unique_short_url(){
+  public static function get_unique_short_url(){
 
         $shortener = str_random(5);
     
-        if(App\Url::whereShortener($shortener)->count() > 0){
+        if(self::whereShortener($shortener)->count() > 0){
     
-            return get_unique_short_url();
+            return self::get_unique_short_url();
         }
     
         return $shortener;
